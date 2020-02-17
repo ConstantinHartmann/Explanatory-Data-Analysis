@@ -1,0 +1,40 @@
+# loading appropriate packages
+
+library(lubridate)
+library(tidyverse)
+
+# reading in the data file
+
+data <- read.table("C:\\Users\\USER\\Dropbox\\Statistik\\household_power_consumption.txt", sep = ";", skip = 1, stringsAsFactors = FALSE)
+str(data)
+
+# renaming the columns
+
+names(data) <- c("Date", "Time", "Global_active_power", "Global_reactive_power", "Voltage", 
+"GLobal_intensity", "Sub_metering_1", "Sub-metering_2", "Sub_metering_3")
+
+# converting the Data column to Data format
+data$Date <- dmy(data$Date)
+
+# filtering data for observations between 01/02/2007 and 02/02/2007 using dplyr
+
+data_filtered <- data %>%
+        filter(Date == dmy("01/02/2007") | Date == dmy("02/02/2007"))
+
+
+Global_active_power <- as.numeric(data_filtered$Global_active_power)
+
+# plotting the histogram with R Basic function
+
+hist(Global_active_power, 
+     main = "Global Active Power",
+     col = "red", xlab = "Global Active Power (kilowatts)")
+
+# Output as png file
+
+png("Plot1.png")
+hist(Global_active_power, 
+     main = "Global Active Power",
+     col = "red", xlab = "Global Active Power (kilowatts)")
+print("Plot1.png")
+dev.off()
